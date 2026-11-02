@@ -1,0 +1,32 @@
+name: Environments Lab
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Which config did I get?
+        run: |
+          echo "API_URL      = [${{ vars.API_URL }}]"
+          echo "DEPLOY_TOKEN = [${{ secrets.DEPLOY_TOKEN }}]"
+          echo "job          = staging (should be instant)"
+
+  prod:
+    runs-on: ubuntu-latest
+    environment:
+      name: prod
+      url: https://example.com
+    steps:
+      - name: This step does not run until a reviewer approves
+        run: |
+          echo "API_URL      = [${{ vars.API_URL }}]"
+          echo "DEPLOY_TOKEN = [${{ secrets.DEPLOY_TOKEN }}]"
+          echo "job          = prod (was waiting for approval)"
